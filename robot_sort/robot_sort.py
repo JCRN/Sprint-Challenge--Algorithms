@@ -98,51 +98,47 @@ class SortingRobot:
         """
         Sort the robot's list.
         """
-        while self.can_move_right() is True:
+        while True:
 
             self.swap_item()
             self.move_right()
-            self.compare_item()
 
-            if self.compare_item() is None:
-                self.swap_item()
-                self.move_right()
-
-            elif self.compare_item == 0 or self.compare_item() == -1:
+            if self.compare_item == 0 or self.compare_item() == -1:  # no swap
                 self.move_left()
                 self.swap_item()
                 self.move_right()
 
-            elif self.compare_item() == 1:
+            elif self.compare_item() == 1:  # swap larger for smaller on iterations r - l
                 self.swap_item()
                 self.move_left()
                 self.swap_item()
                 self.move_right()
                 self.set_light_on()  # a swap was made
 
-            if self.can_move_right() is False:
-                if self.light_is_on() is False:
-                    break
-                else:
-                    self.set_light_off()
+            if not self.can_move_right():
 
-                    while self.can_move_left() is True:
+                if not self.light_is_on():  # no swaps made, list is ordered
+                    break
+
+                else:
+                    self.set_light_off()  # reset for next iteration from r -> l
+
+                    while self.can_move_left():
                         self.swap_item()
                         self.move_left()
-                        self.compare_item()
 
-                        if self.compare_item() == 0 or self.compare_item() == 1:
-                            self.move_right()
-                            self.swap_item()
-                            self.move_left()
-
-                        elif self.compare_item() == -1:
+                        if self.compare_item() == -1:  # swap smaller for larger on iterations l -> r
                             self.swap_item()
                             self.move_right()
                             self.swap_item()
                             self.move_left()
 
-                        if self.can_move_left() is False:
+                        else:
+                            self.move_right()
+                            self.swap_item()
+                            self.move_left()
+
+                        if not self.can_move_left():
                             break
 
 
